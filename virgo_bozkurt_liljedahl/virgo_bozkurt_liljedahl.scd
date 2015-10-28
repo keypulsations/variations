@@ -18,6 +18,9 @@
 
 );
 
+s.prepareForRecord;
+
+
 (
 var delta 		= 8;
 var deltaTwo 	= 100;
@@ -27,9 +30,11 @@ var two = 0.125/16;
 
 Pseq([
 
+  s.record;
+
   (instrument: \mainfx, delta: 0),
 
-  (instrument: \bozkurt,   freq: [82.410, 82.410], fadeintimel: 8, fadeintimer: 8, pulse1freq: 2, pulse2freq: 2, dur: delta*13 + 26, delta: delta),
+  (instrument: \bozkurt,   freq: [82.410, 82.410], fadeintimel: 0, fadeintimer: 0, pulse1freq: 2, pulse2freq: 2, dur: delta*13 + 26, delta: delta),
   (instrument: \bozkurt,   freq: [123.47, 123.47], fadeintimel: 8, fadeintimer: 8, pulse1freq: 4, pulse2freq: 1, dur: delta*12 + 24, delta: delta),
   (instrument: \bozkurt,   freq: [277.18, 277.18], fadeintimel: 8, fadeintimer: 8, pulse1freq: 4, pulse2freq: 1, dur: delta*11 + 22, delta: delta),
   (instrument: \bozkurt,   freq: [41.200, 41.200], fadeintimel: 8, fadeintimer: 8, pulse1freq: 2, pulse2freq: 1, dur: delta*10 + 20, delta: delta),
@@ -199,5 +204,7 @@ Pseq([
   (instrument: \bozkurt,   freq: [369.99, 369.99]*4,   pulse1freq: 1, pulse2freq: 2, dur: 2, delta: 2),
 
 ]).play;
+
+s.stopRecording;
 
 )
