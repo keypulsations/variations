@@ -18,9 +18,6 @@
 
 );
 
-s.prepareForRecord;
-
-
 (
 var delta 		= 8;
 var deltaTwo 	= 100;
@@ -29,8 +26,6 @@ var one = 0.125/8;
 var two = 0.125/16;
 
 Pseq([
-
-  s.record;
 
   (instrument: \mainfx, delta: 0),
 
@@ -204,7 +199,5 @@ Pseq([
   (instrument: \bozkurt,   freq: [369.99, 369.99]*4,   pulse1freq: 1, pulse2freq: 2, dur: 2, delta: 2),
 
 ]).play;
-
-s.stopRecording;
 
 )
