@@ -1,9 +1,8 @@
 (
-
 SynthDef.new(\synth, {
 
   |
-  basePitch,roomsize=300,do=8,re=1,mi,so,la,
+  basePitch,roomsize=300,do=8,re=1,mi,so,la,gate=1,
   dcy=1.75,bd=1,sd=0.5,drmMul=0,impulseA=1,impulseB=2,phaseA=0,phaseB=0.5,reset=0
   |
 
@@ -56,7 +55,7 @@ SynthDef.new(\synth, {
   ~sig = BPeakEQ.ar(~sig,2200,1,-6);
   ~sig = Limiter.ar(~sig * 2,1,0.001);
 
-  Out.ar([0,1],Pan2.ar(~sig,0,0.15) * Env.asr(0, 1,0.5).kr(2,1));
+  Out.ar([0,1],Pan2.ar(~sig,0,0.15) * Env.asr(0, 1, 0.5).kr(2,gate));
 
   }
 
@@ -85,11 +84,14 @@ Routine.run({
   12.wait; ~synthB = Synth(\synth, [\basePitch,54, \mi,2, \so,1, \la,2, \do, 4]);
   12.wait; ~synthB.set(\drmMul, 0.5, \sd, 0.75, \bd, 0.1, \dcy, 3.5);
   12.wait; ~synthC = Synth(\synth, [\basePitch, 54, \mi, 1, \so, 8, \la, 4, \do, 2]);
-  6.wait; ~synthC.set(\drmMul, 0.25);
-  // 6.wait; ~synthC.set(\dcy, 3.5);
+  06.wait; ~synthC.set(\drmMul, 0.25);
+  // 06.wait; ~synthC.set(\dcy, 3.5);
+  16.wait; ~synthA.release(1); ~synthB.release(1);
+           ~cut1   = BBCut2(~aahh, BBCutProc11(8, 16, 4, 1)).play(clock);
+           ~aahh.add(CutRev1.new(0.35, 0.1));
 
 });
 )
 
-~cut1   = BBCut2(~aahh, BBCutProc11(8, 8, 4, 1, 0)).play(clock);
-~aahh.add(CutRev1.new(0.25, 0.1));
+~synthA = Synth(\synth, [\basePitch,30, \re,0.25, \mi,0.25, \so, 0.25, \la, 0.25,]);
+~synthA.release(1)
