@@ -71,7 +71,7 @@ clock = ExternalClock(TempoClock.default);
 clock.play;
 
 ~path   = thisProcess.nowExecutingPath.dirname;
-~sf1    = BBCutBuffer(~path +/+ "aahh.wav", 64);
+~sf1    = BBCutBuffer(~path +/+ "aahh.wav", 128);
 ~sf1a   = BBCutBuffer(~path +/+ "aahh.wav", 64);
 ~sf2    = BBCutBuffer(~path +/+ "uuhh.wav", 64);
 ~aahh   = CutGroup(CutBuf3(~sf1));
@@ -92,14 +92,14 @@ Routine.run({
   06.wait; ~synthC.set(\drmMul, 0.1, \phaseA, 0.25, \phaseB, 0);
   17.wait;*/
   // 1.wait;
-  ~cut1   = BBCut2(~aahh, BBCutProc11(2, 4, 1, 1, 0)).play(clock);
+  ~cut1   = BBCut2(~aahh, BBCutProc11(2, 4, 4, 1, 1)).play(clock);
   ~aahh.add(CutRev1.new(0.5, 0.1));
   // ~aahh.add(CutBit1.new(64, 256, 1));
   // 1.wait;
   // ~synthC.release; ~synthB.release;
 
   // 10.wait;
-  ~cut2   = BBCut2(~uuhh, BBCutProc11(2, 4, 1, 1, 0)).play(clock);
+  ~cut2   = BBCut2(~uuhh, BBCutProc11(2, 4, 8, 1, 0.5)).play(clock);
   ~uuhh.add(CutRev1.new(0.5, 0.1));
   /*2.wait;
 
@@ -112,3 +112,7 @@ Routine.run({
 
 });
 );
+
+~synthB = Synth(\synth, [\basePitch,78, \mi,2, \so,1, \la,2, \do, 4]);
+~synthB.set(\basePitch,66, \mi,2, \so,1, \la,2, \do, 2);
+~synthB.release;
