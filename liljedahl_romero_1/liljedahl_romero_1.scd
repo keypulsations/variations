@@ -3,7 +3,7 @@ SynthDef.new(\synth, {
 
   |
   basePitch,roomsize=300,do=8,re=1,mi,so,la,gate=1,
-  dcy=1.75,bd=1,sd=0.5,drmMul=0,impulseA=1,impulseB=2,phaseA=0,phaseB=0.5,reset=0
+  dcy=1.75,bd=1,sd=0.5,drmMul=0,impulseA=1,impulseB=2,phaseA=0,phaseB=0.5
   |
 
   ~sig =
@@ -11,7 +11,7 @@ SynthDef.new(\synth, {
     Blip.ar(
       Duty.kr(
         1/[re,mi,so,la],
-        reset,
+        0,
         Dseq([0,3,7,12,17,19] + basePitch, inf)
       ).midicps*[1,4,do],
       0
@@ -71,11 +71,11 @@ clock.play;
 
 ~path   = thisProcess.nowExecutingPath.dirname;
 ~sf1    = BBCutBuffer(~path +/+ "aahh.wav", 64);
-~sf1a   = BBCutBuffer(~path +/+ "aahh.wav", 32);
-~sf2    = BBCutBuffer(~path +/+ "uuhh.wav", 32);
-~aahh   = CutGroup(CutBuf3(~sf1, 0));
-~aahhh  = CutGroup(CutBuf3(~sf1a, 0));
-~uuhh   = CutGroup(CutBuf3(~sf2, 0));
+~sf1a   = BBCutBuffer(~path +/+ "aahh.wav", 64);
+~sf2    = BBCutBuffer(~path +/+ "uuhh.wav", 64);
+~aahh   = CutGroup(CutBuf3(~sf1));
+~aahhh  = CutGroup(CutBuf3(~sf1a));
+~uuhh   = CutGroup(CutBuf3(~sf2));
 
 ~clockFace = ClockFace.new;
 ~clockFace.play;
@@ -89,22 +89,23 @@ Routine.run({
   12.wait; ~synthB.set(\drmMul, 0.5, \sd, 0.75, \bd, 0.1, \dcy, 3.5);
   12.wait; ~synthC = Synth(\synth, [\basePitch, 54, \mi, 1, \so, 8, \la, 4, \do, 2]);
   06.wait; ~synthC.set(\drmMul, 0.1, \phaseA, 0.25, \phaseB, 0);
-  // 06.wait; ~synthC.set(\dcy, 3.5);
-  16.wait;
-  ~cut1   = BBCut2(~aahh, BBCutProc11(8, 4, 2, 1)).play(clock);
-  ~aahh.add(CutRev1.new(0.45, 0.1));
-  2.wait;
+  17.wait;
+  ~cut1   = BBCut2(~aahh, BBCutProc11(2, 4, 1, 1, 0)).play(clock);
+  ~aahh.add(CutRev1.new(0.5, 0.1));
+  // ~aahh.add(CutBit1.new(64, 256, 1));
+  1.wait;
   ~synthC.release; ~synthB.release;
-  22.wait;
-  ~cut1.stop;
-  ~cut2   = BBCut2(~aahhh, BBCutProc11(8, 4, 2, 1)).play(clock);
-  ~aahhh.add(CutRev1.new(0.25, 0.1));
+
+  10.wait;
+  ~cut2   = BBCut2(~uuhh, BBCutProc11(2, 4, 1, 1, 0)).play(clock);
+  ~uuhh.add(CutRev1.new(0.5, 0.1));
   2.wait;
 
   ~synthB = Synth(\synth, [\basePitch,54, \mi,2, \so,1, \la,2, \do, 4]);
-  ~synthB.set(\drmMul, 0.5, \sd, 0.75, \bd, 0.1, \dcy, 3.5);
-  ~synthC = Synth(\synth, [\basePitch, 54, \mi, 1, \so, 8, \la, 4, \do, 2]);
-  ~synthC.set(\drmMul, 0.1);
+  ~synthC = Synth(\synth, [\basePitch, 42, \mi, 1, \so, 8, \la, 8, \do, 4]);
+  ~synthC.set(\drmMul, 0.5, \sd, 0, \dcy, 2, \impulseA, 2, \impulseB, 2, \bd, 0.25);
+  12.wait;
+  ~synthB.set(\drmMul, 0.5, \sd, 0.75, \bd, 0.25, \dcy, 3.5);
 
 });
 )
