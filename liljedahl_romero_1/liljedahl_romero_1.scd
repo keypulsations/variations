@@ -71,27 +71,40 @@ clock.play;
 
 ~path   = thisProcess.nowExecutingPath.dirname;
 ~sf1    = BBCutBuffer(~path +/+ "aahh.wav", 64);
+~sf1a   = BBCutBuffer(~path +/+ "aahh.wav", 32);
 ~sf2    = BBCutBuffer(~path +/+ "uuhh.wav", 32);
 ~aahh   = CutGroup(CutBuf3(~sf1, 0));
+~aahhh  = CutGroup(CutBuf3(~sf1a, 0));
 ~uuhh   = CutGroup(CutBuf3(~sf2, 0));
 
-~clck = ClockFace.new;
-~clck.play;
+~clockFace = ClockFace.new;
+~clockFace.play;
 
 Routine.run({
+
+  s.sync;
 
   ~synthA = Synth(\synth, [\basePitch,30, \re,0.25, \mi,0.25, \so, 0.25, \la, 0.25,]);
   12.wait; ~synthB = Synth(\synth, [\basePitch,54, \mi,2, \so,1, \la,2, \do, 4]);
   12.wait; ~synthB.set(\drmMul, 0.5, \sd, 0.75, \bd, 0.1, \dcy, 3.5);
   12.wait; ~synthC = Synth(\synth, [\basePitch, 54, \mi, 1, \so, 8, \la, 4, \do, 2]);
-  06.wait; ~synthC.set(\drmMul, 0.25);
+  06.wait; ~synthC.set(\drmMul, 0.1, \phaseA, 0.25, \phaseB, 0);
   // 06.wait; ~synthC.set(\dcy, 3.5);
-  16.wait; ~synthA.release(1); ~synthB.release(1);
-           ~cut1   = BBCut2(~aahh, BBCutProc11(8, 16, 4, 1)).play(clock);
-           ~aahh.add(CutRev1.new(0.35, 0.1));
+  16.wait;
+  ~cut1   = BBCut2(~aahh, BBCutProc11(8, 4, 2, 1)).play(clock);
+  ~aahh.add(CutRev1.new(0.45, 0.1));
+  2.wait;
+  ~synthC.release; ~synthB.release;
+  22.wait;
+  ~cut1.stop;
+  ~cut2   = BBCut2(~aahhh, BBCutProc11(8, 4, 2, 1)).play(clock);
+  ~aahhh.add(CutRev1.new(0.25, 0.1));
+  2.wait;
+
+  ~synthB = Synth(\synth, [\basePitch,54, \mi,2, \so,1, \la,2, \do, 4]);
+  ~synthB.set(\drmMul, 0.5, \sd, 0.75, \bd, 0.1, \dcy, 3.5);
+  ~synthC = Synth(\synth, [\basePitch, 54, \mi, 1, \so, 8, \la, 4, \do, 2]);
+  ~synthC.set(\drmMul, 0.1);
 
 });
 )
-
-~synthA = Synth(\synth, [\basePitch,30, \re,0.25, \mi,0.25, \so, 0.25, \la, 0.25,]);
-~synthA.release(1)
