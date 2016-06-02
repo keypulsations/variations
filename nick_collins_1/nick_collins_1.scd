@@ -123,15 +123,15 @@ SynthDef(\pad,	{
 
 s.volume.volume = 0.99;
 
-sf1= BBCutBuffer("/Users/Osetinsky/desktop/nick/legato_1.wav",32);
-sf2= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat1.aif",16);
-sf3= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat3.aif",16);
-sf4= BBCutBuffer("/Users/Osetinsky/desktop/nick/legato_2.wav",32);
-sf5= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat2.aif",32);
-sf6= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat4.aif",16);
+sf1=  BBCutBuffer("/Users/Osetinsky/desktop/nick/legato_1.wav",32);
+sf2=  BBCutBuffer("/Users/Osetinsky/desktop/nick/beat1.aif",16);
+sf3=  BBCutBuffer("/Users/Osetinsky/desktop/nick/beat3.aif",16);
+sf4=  BBCutBuffer("/Users/Osetinsky/desktop/nick/legato_2.wav",32);
+sf5=  BBCutBuffer("/Users/Osetinsky/desktop/nick/beat2.aif",32);
+sf6=  BBCutBuffer("/Users/Osetinsky/desktop/nick/beat4.aif",16);
 
-sf8= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat1.aif",16);
-sf9= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat3.aif",16);
+sf8=  BBCutBuffer("/Users/Osetinsky/desktop/nick/beat1.aif",16);
+sf9=  BBCutBuffer("/Users/Osetinsky/desktop/nick/beat3.aif",16);
 sf10= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat2.aif",64);
 sf11= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat4.aif",64);
 sf12= BBCutBuffer("/Users/Osetinsky/desktop/nick/beat5.aif",64);
