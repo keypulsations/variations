@@ -4,31 +4,42 @@
 
 SynthDef(\beatz,	{
 
-  |a=8,b=10,c=80,d=0.4,e=6,f=0.8,g=0.2,h=0.4,freq=55,decaytime=1,mul=1|
+	|a=8,b=10,c=80,d=0.4,e=6,f=0.8,g=0.2,h=0.4,freq=55,decaytime=1,mul=1|
 
-  Out.ar([0,1], {
+	var snd = {
 
-    var arr1 = [a,b,c,d,e,f,g,h];
-    var arr2 = [a,b,c,d,e,f,g,h].reverse;
+		var arr1 = [a,b,c,d,e,f,g,h];
+		var arr2 = [a,b,c,d,e,f,g,h].reverse;
 
-    var y = Demand.ar(
-      Impulse.ar(8),
-      0,
-      [
-        Dseq(arr1,inf),
-        Dseq(arr2,inf)
-      ]
+		var y = Demand.ar(
+			Impulse.ar(8),
+			0,
+			[
+				Dseq(arr1,inf),
+				Dseq(arr2,inf)
+			]
 
-    );
+		);
 
-    AllpassC.ar(
-      in: SinOsc.ar(freq,1).tanh,
-      delaytime: y,
-      decaytime: decaytime,
-      mul: mul
-    )
+		AllpassC.ar(
+			in: SinOsc.ar(freq,1).tanh,
+			delaytime: y,
+			decaytime: decaytime,
+			mul: mul
+		)
 
-  });
+	};
+
+	/* MASTERING by rukano */
+
+	snd = LeakDC.ar(snd); // remove DC
+	snd = CompanderD.ar(snd, 0.5, 1, 1/4, 0.01, 0.1).tanh; // soft comp
+	snd = (snd * 0.75) + LPF.ar(snd, 220, 0.25) + BPF.ar(snd, 2000, 3, 0.5).tanh + HPF.ar(snd , 10000, 2).tanh; // EQing
+	snd = Compander.ar(snd, snd, 0.95, 1, 0.01, 0.015, 0.1); // hard comp
+	snd = Limiter.ar(snd); // limiter
+	snd = LeakDC.ar(snd); // remove further DC if some was created in the chain
+
+	Out.ar(0, snd);
 }).add;
 
 );
