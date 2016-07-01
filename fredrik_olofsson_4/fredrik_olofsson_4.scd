@@ -69,9 +69,12 @@ Routine.run({
 	"free".postln;
 	a.free;b.free;c.free;d.free;e.free; // maybe don't stop these? will have to use different vars below though
 
+	// rukano tipp: you can pause the synths, and then resume them (a.pause; a.resume)
+
 	a = Synth(\redfrikBlip, [\ampDivisor,0.5, \mul,5e3, \add,5e4, \inputArray0,1, \inputArray1,3, \freq,200, \sweepDivisor1, 2]);
 	6.wait;
 	e = Synth(\redfrikSaw, [\freq,840, \rate,5e5, \sweepDivisor1,16, \ampDivisor,2]);
+	e.resume;
 	2.wait;
 	f = Synth(\redfrikSaw, [\freq,1080, \rate,5e6, \sweepDivisor1,16, \ampDivisor,1]);
 	2.wait;
@@ -158,7 +161,8 @@ Routine.run({
 
 	20.wait;
 
-	fx.free;
+	// rukano comment: release fx synth, when you release all the other synths, or better yet, 2-4 seconds after having silence.
+	//	fx.free;
 
 });
 )
