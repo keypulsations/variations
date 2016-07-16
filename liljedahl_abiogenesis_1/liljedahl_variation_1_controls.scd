@@ -1,4 +1,24 @@
 (
+// Mastering FX
+m.free;
+m = {
+	var in = In.ar(0, 2);
+	var snd = LeakDC.ar(in);
+	var brightness = HPF.ar(snd, 12000, 8).tanh;
+	var basschain = LPF.ar(snd, 80);
+	snd = HPF.ar(snd, 50); // remove the ultra low bass
+	snd = Compander.ar(snd, basschain, 0.5, 1, 1/8, 0.05, 0.5, 2); // side chain comp
+	snd = Compander.ar(snd, snd, 0.5, 1, 1/4, 0.025, 0.75, 1.25).tanh; // normal comp
+	snd = snd + (brightness * 1.5);
+	snd = BHiShelf.ar(snd, 8000, 2, 4);
+	snd = MidEQ.ar(snd, 2800, 1, 2);
+	snd = Limiter.ar(LeakDC.ar(snd));
+	ReplaceOut.ar(0, snd);
+}.play(addAction:\addToTail);
+)
+
+
+(
 /*s.prepareForRecord;
 s.record;*/
 x = Synth(\lv1);
