@@ -108,9 +108,30 @@ SynthDef(
 
 		Out.ar(out, sig*amp*env);
 }).add;
+
+SynthDef(\mainfx, {
+	var snd = In.ar(0,2);
+
+	/* MASTERING by rukano */
+
+	snd = LeakDC.ar(snd * 0.9); // remove DC
+	snd = (snd * 0.8) + LPF.ar(snd, 80, 1.1).tanh + HPF.ar(snd, 12000, 0.5).tanh; // EQ
+	snd = BHiShelf.ar(snd, 5000, 0.75, -14); // attenuate some Hi freqs
+	snd = snd * 1.5; // pregain for the comp to act
+	snd = Compander.ar(snd, snd, 0.9, 1, 1/4, 0.025, 0.1, mul: 1.25).tanh; // compress
+	snd = Limiter.ar(snd * 6.dbamp) * 0.999; // limit
+
+	snd = Splay.ar(snd, 0.8); // center the spreading a little bit
+
+	// maybe we could add some sub harmonics like on the variation fredrik olofsson 4? If the kicks needs more support
+
+	ReplaceOut.ar(0, snd);
+
+}).add;
 );
 
 (
+var fx = Synth.tail(s, \mainfx);
 var t=TempoClock.new,
     halt_pos=144,
     num=0,
