@@ -275,4 +275,20 @@
 			};
 		};
 	}.fork(tempoclock);
+
+// Master FX
+{
+	var brightness;
+	var snd = In.ar(0, 2);
+	brightness = HPF.ar(snd, 10000, 4.dbamp).tanh;
+	snd = Compander.ar(snd, snd, 0.9, 1, 1/2, 0.05, 0.2, 1.2).tanh;
+	snd = snd + LPF.ar(snd, 80, 0.5).tanh;
+	snd = LeakDC.ar(snd * 0.5);
+	snd = BHiShelf.ar(snd + (brightness * 0.25), 10000, 0.5, -12);
+	snd = MidEQ.ar(snd, 800, 2, 4);
+	snd = MidEQ.ar(snd, 2400, 2, 4);
+	snd = MidEQ.ar(snd, 120, 0.5, 8);
+	snd = Compander.ar(snd, snd, 0.9, 1, 0.125, 0.05, 0.5);
+	ReplaceOut.ar(0, snd);
+}.play(addAction:\addToTail);
 )
